@@ -1,8 +1,6 @@
-/**
- *
- */
 package com.crossover.techtrial.service;
 
+import com.crossover.techtrial.exceptions.NotFoundException;
 import com.crossover.techtrial.model.Book;
 import com.crossover.techtrial.repositories.BookRepository;
 import com.crossover.techtrial.repositories.TransactionRepository;
@@ -11,11 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-/**
- * @author crossover
- */
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -39,8 +33,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book findById(Long bookId) {
-        Optional<Book> dbPerson = bookRepository.findById(bookId);
-        return dbPerson.orElse(null);
+        return bookRepository.findById(bookId)
+                .orElseThrow(() -> new NotFoundException("can't find book with id " + bookId));
     }
 
 }

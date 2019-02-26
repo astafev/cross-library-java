@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.crossover.techtrial.controller;
 
 import com.crossover.techtrial.dto.TopMemberDTO;
@@ -17,24 +14,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-/**
- * @author crossover
- */
 
 @RestController
 public class MemberController {
 
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
 
     /*
      * PLEASE DO NOT CHANGE SIGNATURE OR METHOD TYPE OF END POINTS
      */
     @PostMapping(path = "/api/member")
-    public ResponseEntity<Member> register(@RequestBody Member p) {
+    public ResponseEntity<?> register(@RequestBody Member p) {
+        // names should be between the length of 2 and 100 and should always start with an alphabet
+        if (p.getName() != null) {
+            int length = p.getName().length();
+            if (length < 2 || length > 100) {
+                return ResponseEntity.status(400).body(Collections.singletonMap("error",
+                        "Please use name between 2 and 100 characters"));
+            }
+            if (!Character.isAlphabetic(p.getName().codePointAt(0))) {
+                return ResponseEntity.status(400).body(Collections.singletonMap("error",
+                        "The name should start from alphabetic character"));
+            }
+        }
         return ResponseEntity.ok(memberService.save(p));
     }
 
@@ -51,11 +56,7 @@ public class MemberController {
      */
     @GetMapping(path = "/api/member/{member-id}")
     public ResponseEntity<Member> getMemberById(@PathVariable(name = "member-id", required = true) Long memberId) {
-        Member member = memberService.findById(memberId);
-        if (member != null) {
-            return ResponseEntity.ok(member);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(memberService.findById(memberId));
     }
 
 
@@ -72,13 +73,7 @@ public class MemberController {
     public ResponseEntity<List<TopMemberDTO>> getTopMembers(
             @RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startTime,
             @RequestParam(value = "endTime", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endTime) {
-        List<TopMemberDTO> topDrivers = new ArrayList<>();
-        /**
-         * Your Implementation Here.
-         *
-         */
-
-        return ResponseEntity.ok(topDrivers);
+        return ResponseEntity.ok(memberService.topDrivers(startTime, endTime));
 
     }
 

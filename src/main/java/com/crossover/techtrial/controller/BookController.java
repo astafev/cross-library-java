@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.crossover.techtrial.controller;
 
 import com.crossover.techtrial.model.Book;
@@ -48,9 +45,7 @@ public class BookController {
     @GetMapping(path = "/api/book/{book-id}")
     public ResponseEntity<Book> getRideById(@PathVariable(name = "book-id", required = true) Long bookId) {
         Book book = bookService.findById(bookId);
-        if (book != null)
-            return ResponseEntity.ok(book);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(book);
     }
 
 
