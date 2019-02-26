@@ -1,22 +1,23 @@
 /**
- * 
+ *
  */
 package com.crossover.techtrial.service;
 
-import java.util.List;
 import com.crossover.techtrial.model.Book;
+
+import java.util.List;
 
 /**
  * BookService interface for Books.
- * @author cossover
  *
+ * @author cossover
  */
 public interface BookService {
-  
-  public List<Book> getAll();
-  
-  public Book save(Book p);
-  
-  public Book findById(Long bookId);
-  
+
+    public List<Book> getAll();
+
+    public Book save(Book p);
+
+    public Book findById(Long bookId);
+
 }

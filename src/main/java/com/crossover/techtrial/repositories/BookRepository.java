@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.crossover.techtrial.repositories;
 
@@ -9,7 +9,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  * @author crossover
- *
  */
 @RestResource(exported = false)
 public interface BookRepository extends CrudRepository<Book, Long> {
